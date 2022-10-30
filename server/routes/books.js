@@ -31,7 +31,7 @@ router.get('/add', (req, res, next) => {
      * ADD CODE HERE *
      *****************/
     
-    res.render('books/details', {title: 'test', books: book});
+    res.render('books/details', {title: 'Add a Book', books: book});
 
 });
 
