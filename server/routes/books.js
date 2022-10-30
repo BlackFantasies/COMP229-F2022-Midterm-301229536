@@ -41,7 +41,7 @@ router.post('/add', (req, res, next) => {
     /*****************
      * ADD CODE HERE *
      *****************/
-    
+    //  Load values using Book Schema Model
     let newBook = book({
       "Title": req.body.title,
       //"Description": req.body.description,
@@ -50,7 +50,9 @@ router.post('/add', (req, res, next) => {
       "Genre": req.body.genre
     });
 
+    //  Creating new book entry using schema
     book.create(newBook, (err, book) => {
+      //  If there is an error, end the response.
       if(err)
       {
         console.log(err);
@@ -58,7 +60,7 @@ router.post('/add', (req, res, next) => {
       }
       else
       {
-        //  Refresh Books Page
+        //  Redirect into Books Page
         res.redirect('/books');
       }
     })
@@ -71,15 +73,18 @@ router.get('/:id', (req, res, next) => {
     /*****************
      * ADD CODE HERE *
      *****************/
+    //  Get unique datbase id
     let id = req.params.id;
 
+    //  Find data by unique id
     book.findById(id, (err, bookToEdit) => {
+      //  If there is an error, end the response.
       if(err){
         console.log(err);
         res.end(err);
       }
       else{
-        //  Show details from Views
+        //  Show details from Views and Send the Found Database Entry
         res.render('books/details', {title: 'Edit Existing User', books: bookToEdit});
       }
     });  
@@ -91,8 +96,11 @@ router.post('/:id', (req, res, next) => {
     /*****************
      * ADD CODE HERE *
      *****************/
+
+    //  Get unique datbase id
     let id = req.params.id;
     
+    //  Take input and update fields into the books database entry by unique id
     let updatedBook = books({
       "_id": id,
       "Title": req.body.title,
@@ -102,12 +110,15 @@ router.post('/:id', (req, res, next) => {
       "Genre": req.body.genre
     });
 
+    //  Update the database with the new entry by unique id
     book.updateOne({_id: id}, updatedBook, (err) => {
+      //  If there is an error, end the response.
       if(err){
         console.log(err);
         res.end(err);
       }
       else{
+        //  Redirected to Books Main Page
         res.redirect('/books')
       }
     });
@@ -119,13 +130,19 @@ router.get('/delete/:id', (req, res, next) => {
     /*****************
      * ADD CODE HERE *
      *****************/
+    
+    //  Get unique datbase id
     let id = req.params.id;
+    
+    //  Remove Book by ID
     book.remove({_id: id}, (err) => {
+      //  If there is an error, end the response.
       if(err){
         console.log(err);
         res.end(err);
       }
       else{
+        //  Redirect into Books
         res.redirect('/books');
       }
     })
